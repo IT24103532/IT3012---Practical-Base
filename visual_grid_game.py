@@ -1,7 +1,7 @@
 # visual_grid_game.py
 import random
 import tkinter as tk
-from agent import SimpleReflexAgent, ModelBasedAgent
+from agent import SimpleReflexAgent, ModelBasedAgent, SearchAgent
 
 
 class VisualGridHuntGame:
@@ -71,6 +71,10 @@ class VisualGridHuntGame:
         return {
             'wall_ahead': wall_ahead,
             'food_here': tuple(self.agent_pos) in self.food_positions,
+            'grid_size': (self.width, self.height),
+            'walls': list(self.walls),
+            'all_food': list(self.food_positions),
+            'agent_pos': tuple(self.agent_pos),
         }
 
     def execute_action(self, action: str):
@@ -127,6 +131,8 @@ class GridGameGUI:
                                       custom_walls=walls)
         if agent_type == 'simple':
             self.agent = SimpleReflexAgent()
+        elif agent_type == 'search':
+            self.agent = SearchAgent()
         else:
             self.agent = ModelBasedAgent()
 
@@ -218,5 +224,5 @@ class GridGameGUI:
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = GridGameGUI(root, width=12, height=12, num_food=15, num_opponents=2, agent_type='model')
+    app = GridGameGUI(root, width=12, height=12, num_food=15, num_opponents=2, agent_type='search')
     root.mainloop()
